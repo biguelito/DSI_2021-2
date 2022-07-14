@@ -134,72 +134,19 @@ class _RandomizerState extends State<Randomizer> {
           _sugestoes.addAll(generateWordPairs().take(10));
         }
 
+        WordPair parTile = _sugestoes[index];
+        WordPair parCard1 = _sugestoes[i];
+        WordPair parCard2 = _sugestoes[i + 1];
+
         return CardTileRow(
-            sugestoes: _sugestoes,
-            salvas: _salvas,
-            isCard: _isCard,
-            index: index,
-            i: i);
+          salvas: _salvas,
+          isCard: _isCard,
+          parTile: parTile,
+          parCard1: parCard1,
+          parCard2: parCard2,
+          tipoTela: "lista",
+        );
       },
     );
   }
-
-  // Widget _buildRow(WordPair par) {
-  //   final isSalva = _salvas.contains(par);
-
-  //   void alternarSalvar() {
-  //     setState(() {
-  //       if (isSalva) {
-  //         _salvas.remove(par);
-  //       } else {
-  //         _salvas.add(par);
-  //       }
-  //     });
-  //   }
-
-  //   Widget _botaoGostei() {
-  //     return GestureDetector(
-  //       child: Icon(
-  //         isSalva ? Icons.favorite : Icons.favorite_border,
-  //         color: isSalva ? Colors.red : null,
-  //         semanticLabel: isSalva ? "Remover" : "Salvar",
-  //       ),
-  //       onTap: alternarSalvar,
-  //     );
-  //   }
-
-  //   Widget _parTexto() {
-  //     return Text(
-  //       par.asSnakeCase,
-  //       style: _fonteStyleMaior,
-  //     );
-  //   }
-
-  //   Widget _buildTile(WordPair par) {
-  //     return ListTile(
-  //       title: _parTexto(),
-  //       trailing: _botaoGostei(),
-  //     );
-  //   }
-
-  //   Widget _buildCard(WordPair par) {
-  //     return Expanded(
-  //       child: Card(
-  //         margin: const EdgeInsets.all(8.0),
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(5.0),
-  //           child: Column(
-  //             children: [
-  //               _parTexto(),
-  //               const SizedBox(height: 10),
-  //               _botaoGostei(),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     );
-  //   }
-
-  //   return _isCard ? _buildCard(par) : _buildTile(par);
-  // }
 }

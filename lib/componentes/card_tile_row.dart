@@ -3,20 +3,22 @@ import 'package:english_words/english_words.dart';
 import '../util/utils.dart';
 
 class CardTileRow extends StatefulWidget {
-  const CardTileRow(
-      {Key? key,
-      required List<WordPair> this.sugestoes,
-      required List<WordPair> this.salvas,
-      required bool this.isCard,
-      required int this.index,
-      required int this.i})
-      : super(key: key);
+  const CardTileRow({
+    Key? key,
+    required List<WordPair> this.salvas,
+    required bool this.isCard,
+    required WordPair this.parTile,
+    required WordPair this.parCard1,
+    required WordPair this.parCard2,
+    required String this.tipoTela,
+  }) : super(key: key);
 
-  final List<WordPair> sugestoes;
   final List<WordPair> salvas;
   final bool isCard;
-  final int index;
-  final int i;
+  final WordPair parTile;
+  final WordPair parCard1;
+  final WordPair parCard2;
+  final String tipoTela;
 
   @override
   State<CardTileRow> createState() => _CardTileRowState();
@@ -25,10 +27,6 @@ class CardTileRow extends StatefulWidget {
 class _CardTileRowState extends State<CardTileRow> {
   @override
   Widget build(BuildContext context) {
-    WordPair parTile = widget.sugestoes[widget.index];
-    WordPair parCard1 = widget.sugestoes[widget.i];
-    WordPair parCard2 = widget.sugestoes[widget.i + 1];
-
     void alternarSalvar(WordPair par, bool isSalva) {
       setState(() {
         if (isSalva) {
@@ -94,8 +92,12 @@ class _CardTileRowState extends State<CardTileRow> {
       );
     }
 
-    return !widget.isCard
-        ? _buildRowTile(parTile)
-        : _buildRowCard(parCard1, parCard2);
+    Widget RowBuilder() {
+      return !widget.isCard
+          ? _buildRowTile(widget.parTile)
+          : _buildRowCard(widget.parCard1, widget.parCard2);
+    }
+
+    return RowBuilder();
   }
 }
