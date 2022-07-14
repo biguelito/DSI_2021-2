@@ -27,77 +27,120 @@ class Randomizer extends StatefulWidget {
 
 class _RandomizerState extends State<Randomizer> {
   final _sugestoes = <WordPair>[];
-  final _fonteStyleMaior = const TextStyle(fontSize: 18);
+  final _fonteStyleMaior = const TextStyle(fontSize: 22);
   final _salvas = <WordPair>[];
+
+  bool _isCard = false;
+  String _nomeTrocaOpcaoCardTile = "card";
+
+  Widget _salvasTile() {
+    Iterable<ListTile> tiles = _salvas.map(
+      (par) {
+        return ListTile(
+          title: Text(
+            par.asSnakeCase,
+            style: _fonteStyleMaior,
+          ),
+        );
+      },
+    );
+
+    List<Widget> divisao = tiles.isNotEmpty
+        ? ListTile.divideTiles(
+            context: context,
+            tiles: tiles,
+          ).toList()
+        : <Widget>[];
+
+    return ListView(children: divisao);
+  }
 
   void _listarSalvas() {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          final tiles = _salvas.map(
-            (par) {
-              return ListTile(
-                title: Text(
-                  par.asSnakeCase,
-                  style: _fonteStyleMaior,
-                ),
-              );
-            },
-          );
-
-          final divisao = tiles.isNotEmpty
-              ? ListTile.divideTiles(
-                  context: context,
-                  tiles: tiles,
-                ).toList()
-              : <Widget>[];
-
           return Scaffold(
             appBar: AppBar(
               title: const Text("Sugestões Salvas"),
             ),
-            body: ListView(
-              children: divisao,
-            ),
+            body: _salvasTile(),
           );
         },
       ),
     );
   }
 
+  void _opcaoEscolhida(context, value) {
+    switch (value) {
+      case 0:
+        _listarSalvas();
+        break;
+      case 1:
+        _trocarCardTile();
+        break;
+    }
+  }
+
+  void _trocarCardTile() {
+    if (_nomeTrocaOpcaoCardTile == "card") {
+      _nomeTrocaOpcaoCardTile = "tile";
+    } else {
+      _nomeTrocaOpcaoCardTile = "card";
+    }
+    setState(() {
+      _isCard = !_isCard;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Randomizador'),
+        title: const Text('Randomizador'),
         actions: [
-          IconButton(
-            onPressed: _listarSalvas,
-            icon: const Icon(Icons.list),
-            tooltip: "Sugestões salvas",
-          )
+          PopupMenuButton(
+            onSelected: (value) => _opcaoEscolhida(context, value),
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 0,
+                child: Text("Pares salvos"),
+              ),
+              PopupMenuItem(
+                value: 1,
+                child: Text("Trocar para $_nomeTrocaOpcaoCardTile"),
+              )
+            ],
+          ),
         ],
       ),
       body: _buildSugestoes(),
     );
-
-    // return _buildSugestoes();
   }
 
   Widget _buildSugestoes() {
     return ListView.builder(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemBuilder: (BuildContext _context, int i) {
         if (i.isOdd) {
-          return Divider();
+          if (_isCard) {
+            return const SizedBox();
+          }
+          return const Divider();
         }
 
         final int index = i ~/ 2;
-        if (index >= _sugestoes.length) {
+        if (i >= _sugestoes.length - 2) {
           _sugestoes.addAll(generateWordPairs().take(10));
         }
 
-        return _buildRow(_sugestoes[index]);
+        return !_isCard
+            ? _buildRow(_sugestoes[index])
+            : Row(
+                children: [
+                  _buildRow(_sugestoes[i]),
+                  _buildRow(_sugestoes[i + 1])
+                ],
+              );
       },
     );
   }
@@ -105,25 +148,59 @@ class _RandomizerState extends State<Randomizer> {
   Widget _buildRow(WordPair par) {
     final isSalva = _salvas.contains(par);
 
-    return ListTile(
-      title: Text(
+    void alternarSalvar() {
+      setState(() {
+        if (isSalva) {
+          _salvas.remove(par);
+        } else {
+          _salvas.add(par);
+        }
+      });
+    }
+
+    Widget _botaoGostei() {
+      return GestureDetector(
+        child: Icon(
+          isSalva ? Icons.favorite : Icons.favorite_border,
+          color: isSalva ? Colors.red : null,
+          semanticLabel: isSalva ? "Remover" : "Salvar",
+        ),
+        onTap: alternarSalvar,
+      );
+    }
+
+    Widget _parTexto() {
+      return Text(
         par.asSnakeCase,
         style: _fonteStyleMaior,
-      ),
-      trailing: Icon(
-        isSalva ? Icons.favorite : Icons.favorite_border,
-        color: isSalva ? Colors.red : null,
-        semanticLabel: isSalva ? "Remover" : "Salvar",
-      ),
-      onTap: () {
-        setState(() {
-          if (isSalva) {
-            _salvas.remove(par);
-          } else {
-            _salvas.add(par);
-          }
-        });
-      },
-    );
+      );
+    }
+
+    Widget _buildTile(WordPair par) {
+      return ListTile(
+        title: _parTexto(),
+        trailing: _botaoGostei(),
+      );
+    }
+
+    Widget _buildCard(WordPair par) {
+      return Expanded(
+        child: Card(
+          margin: const EdgeInsets.all(8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                _parTexto(),
+                const SizedBox(height: 10),
+                _botaoGostei(),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return _isCard ? _buildCard(par) : _buildTile(par);
   }
 }
