@@ -118,16 +118,6 @@ class _RandomizerState extends State<Randomizer> {
     );
   }
 
-  dynamic alternarSalvar(WordPair par, bool isSalva) {
-    setState(() {
-      if (isSalva) {
-        _salvas.remove(par);
-      } else {
-        _salvas.add(par);
-      }
-    });
-  }
-
   Widget _buildSugestoes() {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
@@ -144,8 +134,12 @@ class _RandomizerState extends State<Randomizer> {
           _sugestoes.addAll(generateWordPairs().take(10));
         }
 
-        return cardTileRow(
-            _sugestoes, _salvas, _isCard, index, i, alternarSalvar);
+        return CardTileRow(
+            sugestoes: _sugestoes,
+            salvas: _salvas,
+            isCard: _isCard,
+            index: index,
+            i: i);
       },
     );
   }

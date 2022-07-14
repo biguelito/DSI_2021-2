@@ -2,71 +2,100 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import '../util/utils.dart';
 
-Widget cardTileRow(
-    List<WordPair> sugestoes,
-    List<WordPair> salvas,
-    bool isCard,
-    int index,
-    int i,
-    Function(WordPair parPalavara, bool isSalva) alternarSalvar) {
-  WordPair parTile = sugestoes[index];
-  WordPair parCard1 = sugestoes[i];
-  WordPair parCard2 = sugestoes[i + 1];
+class CardTileRow extends StatefulWidget {
+  const CardTileRow(
+      {Key? key,
+      required List<WordPair> this.sugestoes,
+      required List<WordPair> this.salvas,
+      required bool this.isCard,
+      required int this.index,
+      required int this.i})
+      : super(key: key);
 
-  Widget _botaoGostei(WordPair parAlternar) {
-    final _isSalva = sugestoes.contains(parAlternar);
+  final List<WordPair> sugestoes;
+  final List<WordPair> salvas;
+  final bool isCard;
+  final int index;
+  final int i;
 
-    return GestureDetector(
-      child: Icon(
-        _isSalva ? Icons.favorite : Icons.favorite_border,
-        color: _isSalva ? Colors.red : null,
-        semanticLabel: _isSalva ? "Remover" : "Salvar",
-      ),
-      onTap: alternarSalvar(parAlternar, _isSalva),
-    );
-  }
+  @override
+  State<CardTileRow> createState() => _CardTileRowState();
+}
 
-  Widget _parTexto(WordPair parValor) {
-    return Text(
-      parValor.asSnakeCase,
-      style: Utils.fonteStyleParPalavra,
-    );
-  }
+class _CardTileRowState extends State<CardTileRow> {
+  @override
+  Widget build(BuildContext context) {
+    WordPair parTile = widget.sugestoes[widget.index];
+    WordPair parCard1 = widget.sugestoes[widget.i];
+    WordPair parCard2 = widget.sugestoes[widget.i + 1];
 
-  Widget _buildTile(WordPair par) {
-    return ListTile(
-      title: _parTexto(par),
-      trailing: _botaoGostei(par),
-    );
-  }
+    void alternarSalvar(WordPair par, bool isSalva) {
+      setState(() {
+        if (isSalva) {
+          widget.salvas.remove(par);
+        } else {
+          widget.salvas.add(par);
+        }
+      });
+    }
 
-  Widget _buildRowTile(WordPair par) {
-    return _buildTile(par);
-  }
+    Widget _botaoGostei(WordPair parAlternar) {
+      final _isSalva = widget.salvas.contains(parAlternar);
 
-  Widget _buildCard(WordPair par) {
-    return Expanded(
-      child: Card(
-        margin: const EdgeInsets.all(8.0),
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            children: [
-              _parTexto(par),
-              const SizedBox(height: 10),
-              _botaoGostei(par),
-            ],
+      return GestureDetector(
+        child: Icon(
+          _isSalva ? Icons.favorite : Icons.favorite_border,
+          color: _isSalva ? Colors.red : null,
+          semanticLabel: _isSalva ? "Remover" : "Salvar",
+        ),
+        onTap: () => alternarSalvar(parAlternar, _isSalva),
+      );
+    }
+
+    Widget _parTexto(WordPair parValor) {
+      return Text(
+        parValor.asSnakeCase,
+        style: Utils.fonteStyleParPalavra,
+      );
+    }
+
+    Widget _buildTile(WordPair par) {
+      return ListTile(
+        title: _parTexto(par),
+        trailing: _botaoGostei(par),
+      );
+    }
+
+    Widget _buildRowTile(WordPair par) {
+      return _buildTile(par);
+    }
+
+    Widget _buildCard(WordPair par) {
+      return Expanded(
+        child: Card(
+          margin: const EdgeInsets.all(8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                _parTexto(par),
+                const SizedBox(height: 10),
+                _botaoGostei(par),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
+    }
 
-  Widget _buildRowCard(WordPair par1, WordPair par2) {
-    return Row(
-      children: [_buildCard(par1), _buildCard(par2)],
-    );
-  }
+    Widget _buildRowCard(WordPair par1, WordPair par2) {
+      return Row(
+        children: [_buildCard(par1), _buildCard(par2)],
+      );
+    }
 
-  return isCard ? _buildRowTile(parTile) : _buildRowCard(parCard1, parCard2);
+    return !widget.isCard
+        ? _buildRowTile(parTile)
+        : _buildRowCard(parCard1, parCard2);
+  }
 }
