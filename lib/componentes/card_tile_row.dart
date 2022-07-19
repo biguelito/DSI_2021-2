@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import '../util/utils.dart';
+import 'package:randomizador/modelos/par.dart';
+import 'package:randomizador/repositorio/par_repositorio.dart';
 
 class CardTileRow extends StatefulWidget {
   const CardTileRow({
     Key? key,
-    required List<WordPair> this.salvas,
+    required ParRepositorio this.parRepositorio,
     required bool this.isCard,
-    required WordPair this.parTile,
-    required WordPair this.parCard1,
-    required WordPair this.parCard2,
+    required int this.index,
+    required int this.i,
     required String this.tipoTela,
   }) : super(key: key);
-
-  final List<WordPair> salvas;
+  final ParRepositorio parRepositorio;
   final bool isCard;
-  final WordPair parTile;
-  final WordPair parCard1;
-  final WordPair parCard2;
+  final int index;
+  final int i;
   final String tipoTela;
 
   @override
@@ -27,48 +26,63 @@ class CardTileRow extends StatefulWidget {
 class _CardTileRowState extends State<CardTileRow> {
   @override
   Widget build(BuildContext context) {
-    void alternarSalvar(WordPair par, bool isSalva) {
-      setState(() {
-        if (isSalva) {
-          widget.salvas.remove(par);
-        } else {
-          widget.salvas.add(par);
-        }
-      });
-    }
+    Widget _botaoGostei(Par parAlternar) {
+      final isSalva = widget.parRepositorio.salvas.contains(parAlternar);
 
-    Widget _botaoGostei(WordPair parAlternar) {
-      final _isSalva = widget.salvas.contains(parAlternar);
+      void alternarSalvar(Par parAlternar) {
+        widget.parRepositorio.alternarSalvarPar(parAlternar);
+        setState(() {});
+      }
 
       return GestureDetector(
         child: Icon(
-          _isSalva ? Icons.favorite : Icons.favorite_border,
-          color: _isSalva ? Colors.red : null,
-          semanticLabel: _isSalva ? "Remover" : "Salvar",
+          isSalva ? Icons.favorite : Icons.favorite_border,
+          color: isSalva ? Colors.red : null,
+          semanticLabel: isSalva ? "Remover" : "Salvar",
         ),
-        onTap: () => alternarSalvar(parAlternar, _isSalva),
+        onTap: () => alternarSalvar(parAlternar),
       );
     }
 
-    Widget _parTexto(WordPair parValor) {
+    void remover(Par par, bool isSalva) {
+      widget.parRepositorio.removerSalvar(par);
+      widget.parRepositorio.removerPar(par);
+      setState(() {});
+    }
+
+    Widget _botaoRemover(Par parApagar) {
+      final isSalva = widget.parRepositorio.salvas.contains(parApagar);
+
+      return GestureDetector(
+        child: const Icon(
+          Icons.delete,
+          color: Colors.red,
+          semanticLabel: "Remover",
+        ),
+        onTap: () => remover(parApagar, isSalva),
+      );
+    }
+
+    Widget _parTexto(Par parValor) {
       return Text(
-        parValor.asSnakeCase,
+        parValor.obter(),
         style: Utils.fonteStyleParPalavra,
       );
     }
 
-    Widget _buildTile(WordPair par) {
+    Widget _buildTile(Par par) {
       return ListTile(
         title: _parTexto(par),
         trailing: _botaoGostei(par),
+        leading: _botaoRemover(par),
       );
     }
 
-    Widget _buildRowTile(WordPair par) {
+    Widget _buildRowTile(Par par) {
       return _buildTile(par);
     }
 
-    Widget _buildCard(WordPair par) {
+    Widget _buildCard(Par par) {
       return Expanded(
         child: Card(
           margin: const EdgeInsets.all(8.0),
@@ -86,16 +100,20 @@ class _CardTileRowState extends State<CardTileRow> {
       );
     }
 
-    Widget _buildRowCard(WordPair par1, WordPair par2) {
+    Widget _buildRowCard(Par par1, Par par2) {
       return Row(
         children: [_buildCard(par1), _buildCard(par2)],
       );
     }
 
     Widget RowBuilder() {
+      Par parTile = widget.parRepositorio.obterSugestaoPorIndex(widget.index);
+      Par parCard1 = widget.parRepositorio.obterSugestaoPorIndex(widget.i);
+      Par parCard2 = widget.parRepositorio.obterSugestaoPorIndex(widget.i + 1);
+
       return !widget.isCard
-          ? _buildRowTile(widget.parTile)
-          : _buildRowCard(widget.parCard1, widget.parCard2);
+          ? _buildRowTile(parTile)
+          : _buildRowCard(parCard1, parCard2);
     }
 
     return RowBuilder();

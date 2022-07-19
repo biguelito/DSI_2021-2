@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'package:randomizador/util/utils.dart';
 import 'componentes/card_tile_row.dart';
+import 'package:randomizador/util/utils.dart';
+import 'package:randomizador/repositorio/par_repositorio.dart';
+import 'package:randomizador/modelos/par.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,18 +30,18 @@ class Randomizer extends StatefulWidget {
 }
 
 class _RandomizerState extends State<Randomizer> {
-  final _sugestoes = <WordPair>[];
-  final _salvas = <WordPair>[];
+  final ParRepositorio _parRepositorio = ParRepositorio();
 
   bool _isCard = false;
   String _nomeTrocaOpcaoCardTile = "card";
 
+  // TODO: ajustar rota
   Widget _salvasTile() {
-    Iterable<ListTile> tiles = _salvas.map(
+    Iterable<ListTile> tiles = _parRepositorio.salvas.map(
       (par) {
         return ListTile(
           title: Text(
-            par.asSnakeCase,
+            par.obter(),
             style: Utils.fonteStyleParPalavra,
           ),
         );
@@ -130,20 +132,17 @@ class _RandomizerState extends State<Randomizer> {
         }
 
         final int index = i ~/ 2;
-        if (i >= _sugestoes.length - 2) {
-          _sugestoes.addAll(generateWordPairs().take(10));
+        if (i >= _parRepositorio.sugestoes.length - 2) {
+          generateWordPairs().take(10).forEach((par) {
+            _parRepositorio.inserirNovoPar(par);
+          });
         }
 
-        WordPair parTile = _sugestoes[index];
-        WordPair parCard1 = _sugestoes[i];
-        WordPair parCard2 = _sugestoes[i + 1];
-
         return CardTileRow(
-          salvas: _salvas,
+          parRepositorio: _parRepositorio,
           isCard: _isCard,
-          parTile: parTile,
-          parCard1: parCard1,
-          parCard2: parCard2,
+          index: index,
+          i: i,
           tipoTela: "lista",
         );
       },
