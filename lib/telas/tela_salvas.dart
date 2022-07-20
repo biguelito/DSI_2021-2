@@ -6,9 +6,11 @@ class TelaSalvas extends StatefulWidget {
   const TelaSalvas({
     Key? key,
     required this.parRepositorio,
+    required this.isCard,
   }) : super(key: key);
 
   final ParRepositorio parRepositorio;
+  final bool isCard;
 
   @override
   State<TelaSalvas> createState() => _TelaSalvasState();

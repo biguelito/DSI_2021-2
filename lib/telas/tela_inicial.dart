@@ -7,16 +7,21 @@ class TelaInicial extends StatefulWidget {
   const TelaInicial({
     Key? key,
     required this.parRepositorio,
+    required this.isCard,
+    required this.alternarCardTile,
+    required this.atualizar,
   }) : super(key: key);
 
   final ParRepositorio parRepositorio;
+  final bool isCard;
+  final Function alternarCardTile;
+  final Function atualizar;
 
   @override
   State<TelaInicial> createState() => _TelaInicialState();
 }
 
 class _TelaInicialState extends State<TelaInicial> {
-  bool _isCard = false;
   String _nomeTrocaOpcaoCardTile = "card";
 
   void _listarSalvas() {
@@ -40,9 +45,7 @@ class _TelaInicialState extends State<TelaInicial> {
     } else {
       _nomeTrocaOpcaoCardTile = "card";
     }
-    setState(() {
-      _isCard = !_isCard;
-    });
+    widget.alternarCardTile();
   }
 
   Widget _buildSugestoes() {
@@ -57,7 +60,7 @@ class _TelaInicialState extends State<TelaInicial> {
 
         return CardTileRow(
           parRepositorio: widget.parRepositorio,
-          isCard: _isCard,
+          isCard: widget.isCard,
           index: i,
           tela: "lista",
           atualizar: () {

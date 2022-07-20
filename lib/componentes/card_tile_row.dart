@@ -76,7 +76,6 @@ class _CardTileRowState extends State<CardTileRow> {
             ListTile(
               title: _parTexto(par),
               trailing: _botaoGostei(par),
-              // leading: _botaoRemover(par),
             ),
             const Divider()
           ],
