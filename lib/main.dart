@@ -47,6 +47,7 @@ class _MyAppState extends State<MyApp> {
           '/salvas': (context) => TelaSalvas(
                 parRepositorio: parRepositorio,
                 isCard: isCard,
+                atualizar: () => atualizar(),
               )
         });
   }
