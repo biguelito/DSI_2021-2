@@ -17,20 +17,20 @@ class ParRepositorio {
     salvas.add(par);
   }
 
-  void removerSalvar(Par par) {
+  void removerPar(Par par) {
+    sugestoes.remove(par);
+  }
+
+  void removerSalva(Par par) {
     salvas.remove(par);
   }
 
   void alternarSalvarPar(Par par) {
     if (salvas.contains(par)) {
-      removerPar(par);
+      removerSalva(par);
     } else {
       inserirSalvar(par);
     }
-  }
-
-  void removerPar(Par par) {
-    sugestoes.remove(par);
   }
 
   Par obterSugestaoPorIndex(int index) {

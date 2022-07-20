@@ -45,7 +45,9 @@ class _CardTileRowState extends State<CardTileRow> {
     }
 
     void remover(Par par, bool isSalva) {
-      widget.parRepositorio.removerSalvar(par);
+      if (isSalva) {
+        widget.parRepositorio.removerSalva(par);
+      }
       widget.parRepositorio.removerPar(par);
       setState(() {});
     }
@@ -102,7 +104,10 @@ class _CardTileRowState extends State<CardTileRow> {
 
     Widget _buildRowCard(Par par1, Par par2) {
       return Row(
-        children: [_buildCard(par1), _buildCard(par2)],
+        children: [
+          _buildCard(par1),
+          _buildCard(par2),
+        ],
       );
     }
 

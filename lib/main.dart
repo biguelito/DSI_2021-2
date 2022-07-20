@@ -3,7 +3,6 @@ import 'package:english_words/english_words.dart';
 import 'componentes/card_tile_row.dart';
 import 'package:randomizador/util/utils.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
-import 'package:randomizador/modelos/par.dart';
 
 void main() => runApp(MyApp());
 
@@ -133,7 +132,7 @@ class _RandomizerState extends State<Randomizer> {
 
         final int index = i ~/ 2;
         if (i >= _parRepositorio.sugestoes.length - 2) {
-          generateWordPairs().take(10).forEach((par) {
+          generateWordPairs().take(20).forEach((par) {
             _parRepositorio.inserirNovoPar(par);
           });
         }
