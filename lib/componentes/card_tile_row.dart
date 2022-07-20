@@ -9,14 +9,14 @@ class CardTileRow extends StatefulWidget {
     required this.parRepositorio,
     required this.isCard,
     required this.index,
-    required this.tipoTela,
+    required this.tela,
     required this.atualizar,
   }) : super(key: key);
 
   final ParRepositorio parRepositorio;
   final bool isCard;
   final int index;
-  final String tipoTela;
+  final String tela;
   final Function atualizar;
 
   @override
