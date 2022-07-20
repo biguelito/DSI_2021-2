@@ -123,14 +123,6 @@ class _RandomizerState extends State<Randomizer> {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemBuilder: (BuildContext _context, int i) {
-        if (i.isOdd) {
-          if (_isCard) {
-            return const SizedBox();
-          }
-          return const Divider();
-        }
-
-        final int index = i ~/ 2;
         if (i >= _parRepositorio.sugestoes.length - 2) {
           generateWordPairs().take(20).forEach((par) {
             _parRepositorio.inserirNovoPar(par);
@@ -140,9 +132,11 @@ class _RandomizerState extends State<Randomizer> {
         return CardTileRow(
           parRepositorio: _parRepositorio,
           isCard: _isCard,
-          index: index,
-          i: i,
+          index: i,
           tipoTela: "lista",
+          atualizar: () {
+            setState(() {});
+          },
         );
       },
     );

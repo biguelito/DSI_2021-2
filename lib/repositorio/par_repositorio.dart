@@ -18,18 +18,22 @@ class ParRepositorio {
   }
 
   void removerPar(Par par) {
-    sugestoes.remove(par);
+    if (sugestoes.contains(par)) {
+      sugestoes.remove(par);
+    }
   }
 
   void removerSalva(Par par) {
-    salvas.remove(par);
+    if (salvas.contains(par)) {
+      salvas.remove(par);
+    }
   }
 
   void alternarSalvarPar(Par par) {
     if (salvas.contains(par)) {
-      removerSalva(par);
+      salvas.remove(par);
     } else {
-      inserirSalvar(par);
+      salvas.add(par);
     }
   }
 
