@@ -69,24 +69,29 @@ class _CardTileRowState extends State<CardTileRow> {
     }
 
     Widget _buildTile(Par par) {
-      return Dismissible(
-        key: Key(par.obter()),
-        child: Column(
-          children: [
-            ListTile(
+      return widget.tela == 'inicial'
+          ? Dismissible(
+              key: Key(par.obter()),
+              child: Column(
+                children: [
+                  ListTile(
+                    title: _parTexto(par),
+                    trailing: _botaoGostei(par),
+                  ),
+                  const Divider()
+                ],
+              ),
+              onDismissed: ((direction) {
+                remover(par);
+              }),
+              background: Container(
+                color: Colors.red,
+              ),
+            )
+          : ListTile(
               title: _parTexto(par),
               trailing: _botaoGostei(par),
-            ),
-            const Divider()
-          ],
-        ),
-        onDismissed: ((direction) {
-          remover(par);
-        }),
-        background: Container(
-          color: Colors.red,
-        ),
-      );
+            );
     }
 
     Widget _buildRowTile(Par par) {
@@ -108,7 +113,9 @@ class _CardTileRowState extends State<CardTileRow> {
                 ),
                 Row(
                   children: [
-                    Expanded(child: _botaoRemover(par)),
+                    widget.tela == 'inicial'
+                        ? Expanded(child: _botaoRemover(par))
+                        : const SizedBox(),
                     Expanded(child: _botaoGostei(par)),
                   ],
                 ),
@@ -119,16 +126,16 @@ class _CardTileRowState extends State<CardTileRow> {
       );
     }
 
-    Widget _buildRowCard(Par par1, Par par2) {
+    Widget _buildRowCard(Par par1, Par? par2) {
       return Row(
         children: [
           _buildCard(par1),
-          _buildCard(par2),
+          par2 != null ? _buildCard(par2) : const Expanded(child: SizedBox())
         ],
       );
     }
 
-    Widget rowBuilder() {
+    Widget rowBuilderInicial() {
       Par parTile = widget.parRepositorio.obterSugestaoPorIndex(widget.index);
       Par parCard1 = widget.parRepositorio.obterSugestaoPorIndex(widget.index);
       Par parCard2 =
@@ -143,6 +150,29 @@ class _CardTileRowState extends State<CardTileRow> {
       }
     }
 
-    return rowBuilder();
+    Widget rowBuilderSalvas() {
+      Par parTile = widget.parRepositorio.obterSalvasPorIndex(widget.index);
+      Par parCard1 = widget.parRepositorio.obterSalvasPorIndex(widget.index);
+      Par? parCard2 = widget.parRepositorio.temSegundoCardSalvas(widget.index)
+          ? widget.parRepositorio.obterSalvasPorIndex(widget.index + 1)
+          : null;
+
+      if (!widget.isCard) {
+        return _buildRowTile(parTile);
+      } else if (widget.index.isEven) {
+        return _buildRowCard(parCard1, parCard2 ?? null);
+      } else {
+        return const SizedBox();
+      }
+    }
+
+    Widget cardTileRow() {
+      if (widget.tela == 'salvas') {
+        return rowBuilderSalvas();
+      }
+      return rowBuilderInicial();
+    }
+
+    return cardTileRow();
   }
 }

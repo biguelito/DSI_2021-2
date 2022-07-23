@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
 import 'package:randomizador/telas/tela_inicial.dart';
@@ -16,9 +15,15 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     ParRepositorio parRepositorio = ParRepositorio();
     bool isCard = false;
+    String nomeTrocaOpcaoCardTile = "card";
 
     void alternarCardTile() {
       setState(() {
+        if (nomeTrocaOpcaoCardTile == "card") {
+          nomeTrocaOpcaoCardTile = "tile";
+        } else {
+          nomeTrocaOpcaoCardTile = "card";
+        }
         isCard = !isCard;
       });
     }
@@ -30,25 +35,29 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
-        title: 'RandomizerApp',
-        theme: ThemeData(
-          appBarTheme: AppBarTheme(
-            foregroundColor: Colors.purple.shade800,
-          ),
+      title: 'RandomizerApp',
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          foregroundColor: Colors.purple.shade800,
         ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => TelaInicial(
-                parRepositorio: parRepositorio,
-                isCard: isCard,
-                alternarCardTile: () => alternarCardTile(),
-                atualizar: () => atualizar(),
-              ),
-          '/salvas': (context) => TelaSalvas(
-                parRepositorio: parRepositorio,
-                isCard: isCard,
-                atualizar: () => atualizar(),
-              )
-        });
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => TelaInicial(
+              parRepositorio: parRepositorio,
+              isCard: isCard,
+              alternarCardTile: () => alternarCardTile(),
+              atualizar: () => atualizar(),
+              nomeOpcaoCardTile: nomeTrocaOpcaoCardTile,
+            ),
+        '/salvas': (context) => TelaSalvas(
+              parRepositorio: parRepositorio,
+              isCard: isCard,
+              alternarCardTile: () => alternarCardTile(),
+              atualizar: () => atualizar(),
+              nomeOpcaoCardTile: nomeTrocaOpcaoCardTile,
+            ),
+      },
+    );
   }
 }

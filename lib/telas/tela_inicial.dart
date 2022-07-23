@@ -1,31 +1,40 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:randomizador/modelos/par.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
 import 'package:randomizador/componentes/card_tile_row.dart';
 
 class TelaInicial extends StatefulWidget {
+  final ParRepositorio parRepositorio;
+  final bool isCard;
+  final Function alternarCardTile;
+  final Function atualizar;
+  final String nomeOpcaoCardTile;
+
   const TelaInicial({
     Key? key,
     required this.parRepositorio,
     required this.isCard,
     required this.alternarCardTile,
     required this.atualizar,
+    required this.nomeOpcaoCardTile,
   }) : super(key: key);
-
-  final ParRepositorio parRepositorio;
-  final bool isCard;
-  final Function alternarCardTile;
-  final Function atualizar;
 
   @override
   State<TelaInicial> createState() => _TelaInicialState();
 }
 
 class _TelaInicialState extends State<TelaInicial> {
-  String _nomeTrocaOpcaoCardTile = "card";
-
   void _listarSalvas() {
-    Navigator.pushNamed(context, '/salvas');
+    Navigator.pushNamed(
+      context,
+      '/salvas',
+      arguments: widget.parRepositorio.salvas,
+    ).then((novasSalvas) {
+      setState(() {
+        widget.parRepositorio.salvas = novasSalvas as List<Par>;
+      });
+    });
   }
 
   void _opcaoEscolhida(context, value) {
@@ -34,18 +43,9 @@ class _TelaInicialState extends State<TelaInicial> {
         _listarSalvas();
         break;
       case 1:
-        _trocarCardTile();
+        widget.alternarCardTile();
         break;
     }
-  }
-
-  void _trocarCardTile() {
-    if (_nomeTrocaOpcaoCardTile == "card") {
-      _nomeTrocaOpcaoCardTile = "tile";
-    } else {
-      _nomeTrocaOpcaoCardTile = "card";
-    }
-    widget.alternarCardTile();
   }
 
   Widget _buildSugestoes() {
@@ -62,7 +62,7 @@ class _TelaInicialState extends State<TelaInicial> {
           parRepositorio: widget.parRepositorio,
           isCard: widget.isCard,
           index: i,
-          tela: "lista",
+          tela: "inicial",
           atualizar: () {
             setState(() {});
           },
@@ -86,7 +86,7 @@ class _TelaInicialState extends State<TelaInicial> {
               ),
               PopupMenuItem(
                 value: 1,
-                child: Text("Trocar para $_nomeTrocaOpcaoCardTile"),
+                child: Text("Trocar para ${widget.nomeOpcaoCardTile}"),
               )
             ],
           ),

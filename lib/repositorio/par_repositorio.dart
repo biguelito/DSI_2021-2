@@ -2,8 +2,8 @@ import 'package:randomizador/modelos/par.dart';
 import 'package:english_words/english_words.dart';
 
 class ParRepositorio {
-  final List<Par> sugestoes = <Par>[];
-  final List<Par> salvas = <Par>[];
+  List<Par> sugestoes = <Par>[];
+  List<Par> salvas = <Par>[];
 
   ParRepositorio();
 
@@ -39,5 +39,13 @@ class ParRepositorio {
 
   Par obterSugestaoPorIndex(int index) {
     return sugestoes[index];
+  }
+
+  Par obterSalvasPorIndex(int index) {
+    return salvas[index];
+  }
+
+  bool temSegundoCardSalvas(int index) {
+    return salvas.length > index + 1;
   }
 }
