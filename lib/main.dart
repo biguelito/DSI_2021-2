@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
 import 'package:randomizador/telas/tela_inicial.dart';
+import 'package:randomizador/telas/tela_inserir_editar_par_form.dart';
 import 'package:randomizador/telas/tela_salvas.dart';
 
 void main() => runApp(MyApp());
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> {
               atualizar: () => atualizar(),
               nomeOpcaoCardTile: nomeTrocaOpcaoCardTile,
             ),
+        '/inserireditarparform': ((context) => const InserirEditarParForm())
       },
     );
   }

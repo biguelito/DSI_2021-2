@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:randomizador/modelos/par_dto.dart';
 import '../util/utils.dart';
 import 'package:randomizador/modelos/par.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
@@ -26,6 +27,20 @@ class CardTileRow extends StatefulWidget {
 class _CardTileRowState extends State<CardTileRow> {
   @override
   Widget build(BuildContext context) {
+    Future<void> _editarPar(Par parEditar) async {
+      final resultado = await Navigator.pushNamed(
+        context,
+        '/inserireditarparform',
+        arguments: ParDto(parEditar, "Editar"),
+      );
+      if (resultado != null) {
+        setState(() {
+          Par parRetorno = resultado as Par;
+          widget.parRepositorio.atualizarPar(parRetorno, widget.index);
+        });
+      }
+    }
+
     Widget _botaoGostei(Par parAlternar) {
       final isSalvaIcone = widget.parRepositorio.salvas.contains(parAlternar);
 
@@ -77,6 +92,7 @@ class _CardTileRowState extends State<CardTileRow> {
                   ListTile(
                     title: _parTexto(par),
                     trailing: _botaoGostei(par),
+                    onLongPress: () => _editarPar(par),
                   ),
                   const Divider()
                 ],

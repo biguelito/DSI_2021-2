@@ -5,7 +5,11 @@ class ParRepositorio {
   List<Par> sugestoes = <Par>[];
   List<Par> salvas = <Par>[];
 
-  ParRepositorio();
+  ParRepositorio() {
+    generateWordPairs().take(20).forEach((par) {
+      inserirNovoPar(par);
+    });
+  }
 
   void inserirNovoPar(WordPair novoWordpair) {
     Par novoPar =
@@ -15,6 +19,10 @@ class ParRepositorio {
 
   void inserirSalvar(Par par) {
     salvas.add(par);
+  }
+
+  void atualizarPar(Par par, int index) {
+    sugestoes[index] = par;
   }
 
   void removerPar(Par par) {
