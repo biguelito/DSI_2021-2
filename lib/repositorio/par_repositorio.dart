@@ -21,8 +21,13 @@ class ParRepositorio {
     salvas.add(par);
   }
 
-  void atualizarPar(Par par, int index) {
-    sugestoes[index] = par;
+  void atualizarPar(Par novopar, int index) {
+    Par antigopar = sugestoes[index];
+    sugestoes[index] = novopar;
+    if (salvas.contains(antigopar)) {
+      int salvaAntigoIndex = salvas.indexOf(antigopar);
+      salvas[salvaAntigoIndex] = novopar;
+    }
   }
 
   void removerPar(Par par) {

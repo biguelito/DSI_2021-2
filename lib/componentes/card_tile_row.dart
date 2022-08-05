@@ -37,6 +37,7 @@ class _CardTileRowState extends State<CardTileRow> {
         setState(() {
           Par parRetorno = resultado as Par;
           widget.parRepositorio.atualizarPar(parRetorno, widget.index);
+          widget.atualizar();
         });
       }
     }
@@ -130,7 +131,20 @@ class _CardTileRowState extends State<CardTileRow> {
                 Row(
                   children: [
                     widget.tela == 'inicial'
-                        ? Expanded(child: _botaoRemover(par))
+                        ? Expanded(
+                            child: _botaoRemover(par),
+                          )
+                        : const SizedBox(),
+                    widget.tela == 'inicial'
+                        ? Expanded(
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.blueGrey,
+                              ),
+                              onPressed: () => _editarPar(par),
+                            ),
+                          )
                         : const SizedBox(),
                     Expanded(child: _botaoGostei(par)),
                   ],
