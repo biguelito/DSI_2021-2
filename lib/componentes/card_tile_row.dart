@@ -27,7 +27,7 @@ class CardTileRow extends StatefulWidget {
 class _CardTileRowState extends State<CardTileRow> {
   @override
   Widget build(BuildContext context) {
-    Future<void> _editarPar(Par parEditar) async {
+    Future<void> _editarPar(Par parEditar, int index) async {
       final resultado = await Navigator.pushNamed(
         context,
         '/inserireditarparform',
@@ -36,7 +36,7 @@ class _CardTileRowState extends State<CardTileRow> {
       if (resultado != null) {
         setState(() {
           Par parRetorno = resultado as Par;
-          widget.parRepositorio.atualizarPar(parRetorno, widget.index);
+          widget.parRepositorio.atualizarPar(parRetorno, index);
           widget.atualizar();
         });
       }
@@ -93,7 +93,7 @@ class _CardTileRowState extends State<CardTileRow> {
                   ListTile(
                     title: _parTexto(par),
                     trailing: _botaoGostei(par),
-                    onLongPress: () => _editarPar(par),
+                    onLongPress: () => _editarPar(par, widget.index),
                   ),
                   const Divider()
                 ],
@@ -115,7 +115,7 @@ class _CardTileRowState extends State<CardTileRow> {
       return _buildTile(par);
     }
 
-    Widget _buildCard(Par par) {
+    Widget _buildCard(Par par, int index) {
       return Expanded(
         child: Card(
           margin: const EdgeInsets.all(6.0),
@@ -142,7 +142,7 @@ class _CardTileRowState extends State<CardTileRow> {
                                 Icons.edit,
                                 color: Colors.blueGrey,
                               ),
-                              onPressed: () => _editarPar(par),
+                              onPressed: () => _editarPar(par, index),
                             ),
                           )
                         : const SizedBox(),
@@ -159,8 +159,10 @@ class _CardTileRowState extends State<CardTileRow> {
     Widget _buildRowCard(Par par1, Par? par2) {
       return Row(
         children: [
-          _buildCard(par1),
-          par2 != null ? _buildCard(par2) : const Expanded(child: SizedBox())
+          _buildCard(par1, widget.index),
+          par2 != null
+              ? _buildCard(par2, widget.index + 1)
+              : const Expanded(child: SizedBox())
         ],
       );
     }
