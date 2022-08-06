@@ -7,11 +7,15 @@ class ParRepositorio {
 
   ParRepositorio() {
     generateWordPairs().take(20).forEach((par) {
-      inserirNovoPar(par);
+      inserirNovoWordPair(par);
     });
   }
 
-  void inserirNovoPar(WordPair novoWordpair) {
+  void inserirNovoPar(Par novoPar) {
+    sugestoes.insert(0, novoPar);
+  }
+
+  void inserirNovoWordPair(WordPair novoWordpair) {
     Par novoPar =
         Par(primeira: novoWordpair.first, segunda: novoWordpair.second);
     sugestoes.add(novoPar);

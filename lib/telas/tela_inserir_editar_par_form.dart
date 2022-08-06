@@ -10,12 +10,15 @@ class InserirEditarParForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final parPalavrasFormDto =
         ModalRoute.of(context)!.settings.arguments as ParDto;
-    final primeiraPalavraController =
-        TextEditingController(text: parPalavrasFormDto.par.primeira);
-    final segundaPalavraController =
-        TextEditingController(text: parPalavrasFormDto.par.segunda);
     final acao = parPalavrasFormDto.acao;
     bool isParValido = acao == "Editar" ? true : false;
+
+    final primeiraPalavraController = isParValido
+        ? TextEditingController(text: parPalavrasFormDto.par!.primeira)
+        : TextEditingController(text: "");
+    final segundaPalavraController = isParValido
+        ? TextEditingController(text: parPalavrasFormDto.par!.segunda)
+        : TextEditingController(text: "");
 
     retornarPar() {
       Par resultado = Par(

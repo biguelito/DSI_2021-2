@@ -1,6 +1,7 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:randomizador/modelos/par.dart';
+import 'package:randomizador/modelos/par_dto.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
 import 'package:randomizador/componentes/card_tile_row.dart';
 
@@ -48,13 +49,30 @@ class _TelaInicialState extends State<TelaInicial> {
     }
   }
 
+  Future<void> _editarPar() async {
+    String acao = "Inserir";
+
+    final resultado = await Navigator.pushNamed(
+      context,
+      '/inserireditarparform',
+      arguments: ParDto(null, acao),
+    );
+    if (resultado != null) {
+      setState(() {
+        Par parRetorno = resultado as Par;
+        widget.parRepositorio.inserirNovoPar(parRetorno);
+        widget.atualizar();
+      });
+    }
+  }
+
   Widget _buildSugestoes() {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemBuilder: (BuildContext _context, int i) {
         if (i >= widget.parRepositorio.sugestoes.length - 2) {
           generateWordPairs().take(20).forEach((par) {
-            widget.parRepositorio.inserirNovoPar(par);
+            widget.parRepositorio.inserirNovoWordPair(par);
           });
         }
 
@@ -93,6 +111,10 @@ class _TelaInicialState extends State<TelaInicial> {
         ],
       ),
       body: _buildSugestoes(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _editarPar(),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
