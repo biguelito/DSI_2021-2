@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:randomizador/modelos/par_dto.dart';
+import 'package:randomizador/repositorio/par_firestore.dart';
 import '../util/utils.dart';
 import 'package:randomizador/modelos/par.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
@@ -25,6 +26,8 @@ class CardTileRow extends StatefulWidget {
 }
 
 class _CardTileRowState extends State<CardTileRow> {
+  ParFirestore _parFirestore = ParFirestore();
+
   @override
   Widget build(BuildContext context) {
     Future<void> _editarPar(Par parEditar, int index) async {
@@ -49,6 +52,7 @@ class _CardTileRowState extends State<CardTileRow> {
 
       void alternarSalvar(Par parAlternar) {
         widget.parRepositorio.alternarSalvarPar(parAlternar);
+        _parFirestore.alternarPar(parAlternar);
         widget.atualizar();
       }
 

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:randomizador/config/firebase_options.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
 import 'package:randomizador/telas/tela_inicial.dart';
 import 'package:randomizador/telas/tela_inserir_editar_par_form.dart';
 import 'package:randomizador/telas/tela_salvas.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override

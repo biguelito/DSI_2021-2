@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "246367509899",
+    "project_id": "dsi-2021-2",
+    "storage_bucket": "dsi-2021-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246367509899:android:b8177bd84c185a0b1b638e",
+        "android_client_info": {
+          "package_name": "com.example.randomizador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246367509899-3njal4cl6b7aig5namd1qjbnhrt9384v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF-asP-CJzbzaHs5Dx4KTUJf7uoBzdBpc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246367509899-3njal4cl6b7aig5namd1qjbnhrt9384v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

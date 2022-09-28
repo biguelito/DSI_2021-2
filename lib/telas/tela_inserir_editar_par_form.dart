@@ -22,8 +22,8 @@ class InserirEditarParForm extends StatelessWidget {
 
     retornarPar() {
       Par resultado = Par(
-        primeira: primeiraPalavraController.text,
-        segunda: segundaPalavraController.text,
+        primeiraPalavraController.text,
+        segundaPalavraController.text,
       );
       Navigator.pop(context, resultado);
     }

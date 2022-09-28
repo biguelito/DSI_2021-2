@@ -16,8 +16,7 @@ class ParRepositorio {
   }
 
   void inserirNovoWordPair(WordPair novoWordpair) {
-    Par novoPar =
-        Par(primeira: novoWordpair.first, segunda: novoWordpair.second);
+    Par novoPar = Par(novoWordpair.first, novoWordpair.second);
     sugestoes.add(novoPar);
   }
 
