@@ -45,11 +45,13 @@ class ParRepositorio {
     }
   }
 
-  void alternarSalvarPar(Par par) {
+  bool alternarSalvarPar(Par par) {
     if (salvas.contains(par)) {
       salvas.remove(par);
+      return false;
     } else {
       salvas.add(par);
+      return true;
     }
   }
 

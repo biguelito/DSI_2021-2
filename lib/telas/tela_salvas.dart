@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:randomizador/componentes/card_tile_row.dart';
+import 'package:randomizador/componentes/saved_card_tile_row.dart';
 import 'package:randomizador/repositorio/par_repositorio.dart';
 import 'package:randomizador/modelos/par.dart';
 
@@ -29,7 +30,7 @@ class _TelaSalvasState extends State<TelaSalvas> {
       itemCount: widget.parRepositorio.salvas.length,
       itemBuilder: (BuildContext _context, int i) {
         return widget.parRepositorio.salvas.isNotEmpty
-            ? CardTileRow(
+            ? SavedCardTileRow(
                 parRepositorio: widget.parRepositorio,
                 isCard: widget.isCard,
                 index: i,

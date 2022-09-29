@@ -39,16 +39,6 @@ class ParFirestore {
     return null;
   }
 
-  Future<String> alternarPar(Par par) async {
-    var parExistente = await obterParPorId(par.id);
-    if (parExistente == null) {
-      inserirPar(par);
-    } else {
-      deletarPar(par.id);
-    }
-    return "";
-  }
-
   Future<String> inserirPar(Par par) async {
     var jsonPar = {
       "Primeira": par.primeira,

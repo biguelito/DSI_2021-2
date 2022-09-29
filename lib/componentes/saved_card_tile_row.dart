@@ -3,29 +3,26 @@ import 'package:randomizador/modelos/par_dto.dart';
 import 'package:randomizador/repositorio/par_firestore.dart';
 import '../util/utils.dart';
 import 'package:randomizador/modelos/par.dart';
-import 'package:randomizador/repositorio/par_repositorio.dart';
 
-class CardTileRow extends StatefulWidget {
-  const CardTileRow({
+class SavedCardTileRow extends StatefulWidget {
+  const SavedCardTileRow({
     Key? key,
-    required this.parRepositorio,
     required this.isCard,
     required this.index,
     required this.tela,
     required this.atualizar,
   }) : super(key: key);
 
-  final ParRepositorio parRepositorio;
   final bool isCard;
   final int index;
   final String tela;
   final Function atualizar;
 
   @override
-  State<CardTileRow> createState() => _CardTileRowState();
+  State<SavedCardTileRow> createState() => _SavedCardTileRowState();
 }
 
-class _CardTileRowState extends State<CardTileRow> {
+class _SavedCardTileRowState extends State<SavedCardTileRow> {
   final ParFirestore _parFirestore = ParFirestore();
 
   @override
